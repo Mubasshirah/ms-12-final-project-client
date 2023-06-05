@@ -1,0 +1,14 @@
+*****************74*******************************
+react awesome component: carousel,slider,
+*shared title
+*parallex for fixed bg
+
+
+
+
+*****************75****************************
+* react helmet
+*react parralex
+*custom hook useMenu for loading data dynamically from another component
+*react-tab
+
