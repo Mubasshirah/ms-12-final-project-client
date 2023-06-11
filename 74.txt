@@ -9,6 +9,178 @@ react awesome component: carousel,slider,
 *****************75****************************
 * react helmet
 *react parralex
-*custom hook useMenu for loading data dynamically from another component
+*custom hook useMenu for loading data dynamically from another component(
+    tobe problem hoilo dynamic route korlei ar evabe local thk  data load kora jbena...amne static kichu data load kora jaite pare.tobe mainly backend thekei data load korte hbe..that means hardcode "menu.json" na kore "http://localhost:5000/menu" ata bosaite hbe useEffect e)
 *react-tab
+*server side and mongodb using started
+*pegination using swiper
 
+*****************76****************************
+*login page without header and footer
+* react captcha
+***auth related***
+.onauthstatechange: user er state bujhar jnno and user info ke dhore rakhte
+*create user
+*signin user
+*logout
+*private route
+*navigate to private route after logged in.
+*update profile
+
+*sweet alert
+*form related:
+->formik docs
+->react-hook-form(popular)
+
+
+
+
+
+
+steps for selection:
+alt+shift+ctrl (down arrow)=milti cursor
+alt+shift (right arrow)=word selection
+shift+end = middle thk last porjonto selection.
+
+
+*****************77****************************
+*add to cart e add korar 3 option:
+  1.locally context e set kora ->{reload or refresh korle chole jabe}
+  2.database e user onusare add kore rakha -> {akta browser e thkbe onno browser thk dekhte gele ar thakbena}
+  3.local storage e add kore rakha -> {login kora lagbe age user ke.noeto store thakbena}
+
+  ***->->*** naming convension = img-1
+
+  **tanStack query: client side e data load korata easy and powerful kore felse(refetch kora lgle usequery use kora lagbe,refetch use orte hbe jdi ak route er info onno route e dekhaite chai,,same route e hoile useState and useEffect use korei data load kora jay, only get operation er khetre usequery use korbo.but post,delete ,patch er khetre useQueryuse hoana,ei project e normal useEffect and useState use korbo)
+  -> setup related kaj main.jsx e.(cart e add kora)
+  -> cart akta array of objects hobe,jei user login kora ache tar add kora sob products er. 
+  ->cart er sob product er price ber korte arr.reduce usekorbo 
+
+
+  *****************78****************************
+  *kono kon user sign upkorse tar info backend e save kora
+  *google dia sign in korle sta backend e handle kora.
+  *sob  user ke dekhano->react query use kore
+  *admin id set kora
+  *admin dashboard and user dashboard ke dynamically dekhano
+  *patch kore user er role change kora admin naki normal user.
+
+  **patch vs put: partially update korte patch and full update korte put.
+
+  *json web token:jwt
+  *axios: crud operation client site e sohoje korar jnno
+  *isAdmin check: admin e ak dashboard data and user e arek dashboard data
+
+  ****************79****************************
+  admin panel: etate dhukar duita upay: 1.link dekle click kora 2.type kore link e dhuka
+  and normal user panel:
+
+  *react hook form to add item in database (admin panel)
+  *image hosting service
+->addItem er kaj
+imghoastingkey
+imghoastingurl
+
+  *admin panel steps:
+
+  *backend e admin/:email dia post method
+  *client e useAdmin hook e usequery and axiosSecure kora
+  *adminRoute baniye setar modde route dhukano jate keu type kore dhukte na pare. useAdmin thk props nia 
+  *dashboard e  useAdmin hook thk isAdmin nia conditional nav banano
+
+  ->jei route ke secure korbona sei route e axiosSecure use na kore just fetch use korlei hobe.
+steps for jwt:
+local
+jwt install
+const jwt = require('jsonwebtoken');
+**require('crypto').randomBytes(64).toString('hex')
+.env te token
+app.post('/jwt)
+verifyjwt middleware
+->verifyAdmin 
+
+client:
+ -> if(currentUser){
+                axios.post('http://localhost:5000/jwt',{email:currentUser.email})
+                .then(data=>{
+                    console.log(data.data.token)
+                    localStorage.setItem('access-token', data.data.token);
+                    setLoading(false);
+                })
+            }
+            
+            else{
+                localStorage.removeItem('access-token')
+            }
+-> hooks e useAxiosSecure hook 
+
+
+**********************80******************************
+*payment:
+->MFS:mobile financing system :nagad,bkash
+->BAnking API: bank access dia day.bank thk tk withdraw kora jay. payoneer
+->own system(independent payment system): paypal,stripe,square
+->aggregator: credit card process kore (bangladeshi sslcommerce)
+
+
+step:for payment using stripe
+client
+** react stripe js install in client
+**stripe e account khule pk key ta .env.local e set kora
+** erpor checkoutForPayment e gia puro kaj copy
+**erpor payment e gia kaj
+
+backend:
+install stripe
+.env te secret key rakha
+const stripe=require('stripe')(process.env.PAYMENT_SECRET_KEY);
+//create payment intent
+
+erpor again frontend e:
+->payment e curt thk price ta ber kore checkoutForm e props akare pathabo.
+-> erpor checkoutForm e:
+
+const [axiosSecure]=useAxiosSecure();
+    const [clientSecret,setClientSecret]=useState('');
+
+    useEffect(()=>{
+      axiosSecure.post('/create-payment-intent',{price})
+      .then(res=>{
+        console.log(res.data.clientSecret)
+        setClientSecret(res.data.clientSecret)
+      })
+    },[])
+
+erpor handleSubmit e:
+ const {paymentIntent, error:confirmError} = await stripe.confirmCardPayment(
+        clientSecret,
+        {
+          payment_method: {
+            card: card,
+            billing_details: {
+              name: user?.displayName || 'annonymous',
+              email: user?.email || 'annonymous'
+            },
+          },
+        },
+      );
+      if(confirmError){
+        console.log(confirmError)
+      }
+      console.log(paymentIntent);
+      if(paymentIntent.status==='succeeded'){
+        const transectionId=paymentIntent.id;
+   erpor      // data e payment save related kaj backend e api bananor por
+      }
+
+
+
+  ***payment brief overview:
+  1.first e card er info paua
+  2. erpr card er payment method toiri kora
+  3.erpro ai duita ke aksathe kore payment kora  
+
+
+  ******************************81*****************************************
+  * user o admin er jnno alada home route
+  ->useAdmin and useCart hook jegulote useQuery get operation ache segulote enabled:!loading dibo tahole ar login korar por abr log in route asbna or abar load dite hbena.

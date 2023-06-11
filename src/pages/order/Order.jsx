@@ -7,6 +7,7 @@ import orderImg from  "../../assets/shop/banner2.jpg"
 import useMenu from '../../hooks/useMenu';
 import OrderTab from './OrderTab';
 import { useParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 const Order = () => {
     const categories=['offered','salad','pizza','soup','dessert','drinks'];
     const {category}=useParams();
@@ -23,6 +24,10 @@ const Order = () => {
    const dessert=menu.filter(one=>one.category==='dessert');
     return (
         <div>
+            <Helmet>
+                <title>Bistro Boss | Order</title>
+
+            </Helmet>
             <Cover img={orderImg} title="Our Dishes" description="Order from our menu"></Cover>
         <Tabs selectedIndex={tabIndex} onSelect={(index) => setTabIndex(index)}>
             <TabList>

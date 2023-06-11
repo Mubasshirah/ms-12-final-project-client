@@ -1,7 +1,7 @@
 
 import { Link } from 'react-router-dom';
 import FoodCard from '../../components/FoodCard';
-
+// todo: implement pagination here
 const OrderTab = ({items}) => {
     return (
         <div>
